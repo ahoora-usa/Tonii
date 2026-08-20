@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tamu Girl</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #fcf5f5;
+            color: #3d2c2c;
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .site-wrapper {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            flex: 1;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(200, 150, 150, 0.2);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            background: #d99b9b;
+            color: #fcf5f5;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 1.3rem;
+        }
+
+        .brand-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #4d2e2e;
+        }
+
+        .brand-name span {
+            font-weight: 300;
+            color: #b27a7a;
+        }
+
+        .tagline {
+            font-size: 0.9rem;
+            color: #8f6b6b;
+            background: rgba(200, 150, 150, 0.1);
+            padding: 0.3rem 0.9rem;
+            border-radius: 40px;
+            border: 1px solid rgba(200, 150, 150, 0.15);
+        }
+
+        .admin-trigger {
+            background: #d99b9b;
+            color: #fcf5f5;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s;
+            letter-spacing: 0.3px;
+        }
+
+        .admin-trigger:hover {
+            background: #c28484;
+        }
+
+        .admin-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(80, 50, 50, 0.3);
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+
+        .admin-modal.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: #fffafa;
+            max-width: 420px;
+            width: 90%;
+            padding: 2.5rem 2rem;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(120, 80, 80, 0.15);
+        }
+
+        .modal-box h2 {
+            font-weight: 600;
+            font-size: 1.5rem;
+            margin-bottom: 1.8rem;
+            text-align: center;
+            color: #4d2e2e;
+        }
+
+        .input-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #7a5a5a;
+            margin-bottom: 0.3rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 1px solid #f0dada;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            background: #fcf5f5;
+            transition: 0.2s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #d99b9b;
+            background: #fff;
+        }
+
+        .login-error {
+            color: #b33c3c;
+            font-size: 0.8rem;
+            margin-top: 0.2rem;
+            display: none;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1.8rem;
+        }
+
+        .modal-actions button {
+            flex: 1;
+            padding: 0.7rem;
+            border-radius: 60px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-login {
+            background: #d99b9b;
+            color: white;
+        }
+
+        .btn-login:hover {
+            background: #c28484;
+        }
+
+        .btn-close {
+            background: #f0e0e0;
+            color: #4d2e2e;
+        }
+
+        .btn-close:hover {
+            background: #e6d0d0;
+        }
+
+        .admin-panel {
+            display: none;
+            margin-top: 2.5rem;
+            background: #fffafa;
+            border-radius: 28px;
+            padding: 2rem;
+            box-shadow: 0 8px 30px rgba(180, 130, 130, 0.08);
+            border: 1px solid #f5e8e8;
+        }
+
+        .admin-panel.active {
+            display: block;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .panel-header h3 {
+            font-weight: 600;
+            font-size: 1.3rem;
+            color: #4d2e2e;
+        }
+
+        .panel-header .logout-btn {
+            background: none;
+            border: 1px solid #f0dada;
+            padding: 0.3rem 1.2rem;
+            border-radius: 60px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            color: #7a5a5a;
+            transition: 0.2s;
+        }
+
+        .panel-header .logout-btn:hover {
+            background: #f5e8e8;
+        }
+
+        .product-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .product-form .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .product-form input,
+        .product-form textarea {
+            width: 100%;
+            padding: 0.6rem 1rem;
+            border: 1px solid #f0dada;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            background: #fcf5f5;
+        }
+
+        .product-form textarea {
+            border-radius: 20px;
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .product-form .file-input-wrapper {
+            grid-column: 1 / -1;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .product-form .file-input-wrapper input[type="file"] {
+            flex: 1;
+            min-width: 150px;
+            padding: 0.5rem;
+            border: 1px dashed #d99b9b;
+            border-radius: 40px;
+            background: #fcf5f5;
+            color: #7a5a5a;
+        }
+
+        .product-form .file-input-wrapper small {
+            color: #b27a7a;
+            font-size: 0.8rem;
+        }
+
+        .product-form button {
+            background: #d99b9b;
+            color: white;
+            border: none;
+            padding: 0.7rem;
+            border-radius: 60px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            grid-column: 1 / -1;
+        }
+
+        .product-form button:hover {
+            background: #c28484;
+        }
+
+        .product-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .product-item {
+            background: #fcf5f5;
+            border-radius: 24px;
+            padding: 1.2rem 1.5rem;
+            border: 1px solid #f5e8e8;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .product-item .main-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .product-item .info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .product-item .name {
+            font-weight: 600;
+            color: #4d2e2e;
+        }
+
+        .product-item .price {
+            background: #f5e8e8;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            color: #4d2e2e;
+        }
+
+        .product-item .discount {
+            color: #b33c3c;
+            font-size: 0.8rem;
+            background: #fce8e8;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+        }
+
+        .product-item .remove-btn {
+            background: none;
+            border: none;
+            color: #b33c3c;
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 0 0.3rem;
+        }
+
+        .product-item .images-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.3rem;
+        }
+
+        .product-item .images-row img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 16px;
+            border: 2px solid #f5e8e8;
+            background: #fff;
+        }
+
+        .product-item .images-row .no-img {
+            font-size: 0.8rem;
+            color: #b27a7a;
+            padding: 0.2rem 0;
+        }
+
+        .empty-products {
+            text-align: center;
+            color: #b27a7a;
+            padding: 2rem 0;
+            font-size: 0.95rem;
+        }
+
+        .optional-section {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px dashed #f0dada;
+        }
+
+        .optional-section label {
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: block;
+            margin-bottom: 0.3rem;
+            color: #4d2e2e;
+        }
+
+        .optional-section textarea {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 1px solid #f0dada;
+            border-radius: 20px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 80px;
+            background: #fcf5f5;
+        }
+
+        .optional-section button {
+            margin-top: 0.5rem;
+            background: #f5e8e8;
+            border: none;
+            padding: 0.4rem 1.5rem;
+            border-radius: 60px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #4d2e2e;
+        }
+
+        .optional-section button:hover {
+            background: #e6d0d0;
+        }
+
+        .footer-note {
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(200, 150, 150, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: #8f6b6b;
+        }
+
+        .footer-note .badge {
+            background: #d99b9b;
+            color: #fcf5f5;
+            padding: 0.2rem 1rem;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 600px) {
+            .site-wrapper {
+                padding: 1.5rem 1rem;
+            }
+            .brand-name {
+                font-size: 1.5rem;
+            }
+            .logo-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+            .product-form {
+                grid-template-columns: 1fr;
+            }
+            .product-form .full-width {
+                grid-column: 1;
+            }
+            .product-form .file-input-wrapper {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="site-wrapper">
+        <header class="brand-header">
+            <div class="logo-area">
+                <div class="logo-icon">TG</div>
+                <h1 class="brand-name">Tamu <span>Girl</span></h1>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap;">
+                <span class="tagline">Arayeshi · Moraghebi</span>
+                <button class="admin-trigger" id="openAdminBtn">Modiriyat</button>
+            </div>
+        </header>
+
+        <div class="admin-modal" id="loginModal">
+            <div class="modal-box">
+                <h2>Vorud be Modiriyat</h2>
+                <div class="input-group">
+                    <label>Nam karbari</label>
+                    <input type="text" id="loginUser" placeholder="arisa ya mehrsa">
+                </div>
+                <div class="input-group">
+                    <label>Ramz obur</label>
+                    <input type="password" id="loginPass" placeholder="Ramz obur">
+                </div>
+                <div class="login-error" id="loginError">Nam karbari ya ramz obur eshtebah ast</div>
+                <div class="modal-actions">
+                    <button class="btn-login" id="loginBtn">Vorud</button>
+                    <button class="btn-close" id="closeModalBtn">Bastan</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-panel" id="adminPanel">
+            <div class="panel-header">
+                <h3>Panel Modiriyat · Moholat</h3>
+                <button class="logout-btn" id="logoutBtn">Khoroji</button>
+            </div>
+
+            <div class="product-form">
+                <input type="text" id="productName" placeholder="Nam mohol">
+                <input type="text" id="productPrice" placeholder="Gheymat (Toman)">
+                <input type="text" id="productDiscount" placeholder="Takhfif (masalan 20%)">
+                <textarea id="productDesc" placeholder="Tohzihate kotah (ekhtiyari)"></textarea>
+                <div class="file-input-wrapper full-width">
+                    <input type="file" id="productImages" multiple accept="image/*">
+                    <small>Mitavanid chand aks entekhab konid</small>
+                </div>
+                <button id="addProductBtn">Afzudan mohol</button>
+            </div>
+
+            <div id="productListContainer">
+                <div class="product-list" id="productList"></div>
+                <div class="empty-products" id="emptyProducts">Hich moholi sabt nashode ast.</div>
+            </div>
+
+            <div class="optional-section">
+                <label>Bakhsh ekhtiyari · har taghyiri ke mikhahid e'mal shavad</label>
+                <textarea id="optionalNote" placeholder="Matne delkhah, yaddasht, ya har taghyire digar..."></textarea>
+                <button id="saveOptionalBtn">Zakhire taghyirat ekhtiyari</button>
+                <div style="margin-top: 0.5rem; font-size: 0.8rem; color: #7a5a5a;" id="optionalStatus"></div>
+            </div>
+        </div>
+
+        <footer class="footer-note">
+            <div class="copy">2026 Tamu Girl · Lozam Arayeshi</div>
+            <span class="badge">Modiriyat Ekhtesasi</span>
+        </footer>
+    </div>
+
+    <script>
+        (function() {
+            const VALID_USERS = {
+                'arisa': '1392',
+                'mehrsa': '1393'
+            };
+
+            const modal = document.getElementById('loginModal');
+            const openBtn = document.getElementById('openAdminBtn');
+            const closeBtn = document.getElementById('closeModalBtn');
+            const loginBtn = document.getElementById('loginBtn');
+            const loginUser = document.getElementById('loginUser');
+            const loginPass = document.getElementById('loginPass');
+            const loginError = document.getElementById('loginError');
+            const adminPanel = document.getElementById('adminPanel');
+            const logoutBtn = document.getElementById('logoutBtn');
+
+            const productName = document.getElementById('productName');
+            const productPrice = document.getElementById('productPrice');
+            const productDiscount = document.getElementById('productDiscount');
+            const productDesc = document.getElementById('productDesc');
+            const productImages = document.getElementById('productImages');
+            const addBtn = document.getElementById('addProductBtn');
+            const productList = document.getElementById('productList');
+            const emptyProducts = document.getElementById('emptyProducts');
+
+            const optionalNote = document.getElementById('optionalNote');
+            const saveOptionalBtn = document.getElementById('saveOptionalBtn');
+            const optionalStatus = document.getElementById('optionalStatus');
+
+            let isLoggedIn = false;
+            let products = [];
+            let optionalData = '';
+
+            function readFilesAsDataURL(files) {
+                return new Promise((resolve) => {
+                    const results = [];
+                    if (!files || files.length === 0) {
+                        resolve([]);
+                        return;
+                    }
+                    let completed = 0;
+                    for (let i = 0; i < files.length; i++) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            results.push(e.target.result);
+                            completed++;
+                            if (completed === files.length) {
+                                resolve(results);
+                            }
+                        };
+                        reader.readAsDataURL(files[i]);
+                    }
+                });
+            }
+
+            function renderProducts() {
+                productList.innerHTML = '';
+                if (products.length === 0) {
+                    emptyProducts.style.display = 'block';
+                    return;
+                }
+                emptyProducts.style.display = 'none';
+                products.forEach((p, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'product-item';
+                    const imagesHtml = p.images && p.images.length > 0 ?
+                        p.images.map(img => `<img src="${img}" alt="aks mohol">`).join('') :
+                        `<span class="no-img">bedun aks</span>`;
+                    item.innerHTML = `
+                        <div class="main-row">
+                            <div class="info">
+                                <span class="name">${p.name}</span>
+                                <span class="price">${p.price} Toman</span>
+                                ${p.discount ? `<span class="discount">${p.discount}</span>` : ''}
+                                ${p.desc ? `<span style="font-size:0.8rem;color:#7a5a5a;">${p.desc}</span>` : ''}
+                            </div>
+                            <button class="remove-btn" data-index="${index}">✕</button>
+                        </div>
+                        <div class="images-row">${imagesHtml}</div>
+                    `;
+                    productList.appendChild(item);
+                });
+
+                document.querySelectorAll('.remove-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        const idx = parseInt(this.dataset.index);
+                        products.splice(idx, 1);
+                        renderProducts();
+                        saveToStorage();
+                    });
+                });
+            }
+
+            function saveToStorage() {
+                try {
+                    localStorage.setItem('tamu_products', JSON.stringify(products));
+                    localStorage.setItem('tamu_optional', optionalNote.value);
+                } catch (e) {}
+            }
+
+            function loadFromStorage() {
+                try {
+                    const saved = localStorage.getItem('tamu_products');
+                    if (saved) {
+                        products = JSON.parse(saved);
+                    } else {
+                        products = [
+                            { name: 'Rezh lab mat', price: '250,000', discount: '10%', desc: 'Rangi mandegar',
+                            images: [] },
+                            { name: 'Krem pudr', price: '480,000', discount: '', desc: 'Pooshesh kamel',
+                            images: [] }
+                        ];
+                    }
+                    const optionalSaved = localStorage.getItem('tamu_optional');
+                    if (optionalSaved) {
+                        optionalNote.value = optionalSaved;
+                        optionalData = optionalSaved;
+                    }
+                } catch (e) {
+                    products = [];
+                }
+                renderProducts();
+            }
+
+            function login(username, password) {
+                if (VALID_USERS[username] && VALID_USERS[username] === password) {
+                    isLoggedIn = true;
+                    modal.classList.remove('active');
+                    adminPanel.classList.add('active');
+                    loginError.style.display = 'none';
+                    loadFromStorage();
+                    return true;
+                } else {
+                    loginError.style.display = 'block';
+                    return false;
+                }
+            }
+
+            function logout() {
+                isLoggedIn = false;
+                adminPanel.classList.remove('active');
+                loginUser.value = '';
+                loginPass.value = '';
+                loginError.style.display = 'none';
+                saveToStorage();
+            }
+
+            openBtn.addEventListener('click', function() {
+                if (isLoggedIn) {
+                    adminPanel.classList.add('active');
+                } else {
+                    modal.classList.add('active');
+                    loginUser.focus();
+                }
+            });
+
+            closeBtn.addEventListener('click', function() {
+                modal.classList.remove('active');
+                loginError.style.display = 'none';
+            });
+
+            loginBtn.addEventListener('click', function() {
+                login(loginUser.value.trim(), loginPass.value.trim());
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && modal.classList.contains('active')) {
+                    loginBtn.click();
+                }
+            });
+
+            logoutBtn.addEventListener('click', function() {
+                logout();
+            });
+
+            addBtn.addEventListener('click', async function() {
+                const name = productName.value.trim();
+                const price = productPrice.value.trim();
+                const discount = productDiscount.value.trim();
+                const desc = productDesc.value.trim();
+                const files = productImages.files;
+
+                if (!name || !price) {
+                    alert('Lotfan nam va gheymat mohol ra vared konid.');
+                    return;
+                }
+
+                let images = [];
+                if (files && files.length > 0) {
+                    images = await readFilesAsDataURL(files);
+                }
+
+                products.push({
+                    name: name,
+                    price: price,
+                    discount: discount || '',
+                    desc: desc || '',
+                    images: images
+                });
+
+                productName.value = '';
+                productPrice.value = '';
+                productDiscount.value = '';
+                productDesc.value = '';
+                productImages.value = '';
+
+                renderProducts();
+                saveToStorage();
+            });
+
+            saveOptionalBtn.addEventListener('click', function() {
+                const val = optionalNote.value;
+                optionalData = val;
+                try {
+                    localStorage.setItem('tamu_optional', val);
+                    optionalStatus.textContent = 'Taghyirat ekhtiyari zakhire shod.';
+                    setTimeout(() => { optionalStatus.textContent = ''; }, 3000);
+                } catch (e) {
+                    optionalStatus.textContent = 'Khata dar zakhire-sazi.';
+                }
+            });
+
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                    loginError.style.display = 'none';
+                }
+            });
+
+            (function init() {
+                try {
+                    const saved = localStorage.getItem('tamu_products');
+                    if (!saved) {
+                        products = [
+                            { name: 'Rezh lab mat', price: '250,000', discount: '10%', desc: 'Rangi mandegar',
+                            images: [] },
+                            { name: 'Krem pudr', price: '480,000', discount: '', desc: 'Pooshesh kamel',
+                            images: [] }
+                        ];
+                        localStorage.setItem('tamu_products', JSON.stringify(products));
+                    } else {
+                        products = JSON.parse(saved);
+                    }
+                    const optionalSaved = localStorage.getItem('tamu_optional');
+                    if (optionalSaved) {
+                        optionalNote.value = optionalSaved;
+                    }
+                } catch (e) {
+                    products = [];
+                }
+            })();
+
+            console.log('Tamu Girl · Modiriyat ba arisa/1392 ya mehrsa/1393');
+        })();
+    </script>
+</body>
+</html>
